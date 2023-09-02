@@ -1,11 +1,12 @@
 import { Router } from 'express'
 
 import userController from '@/controllers/user'
+import { authGuard } from '@/middlewares/auth'
 
 const routes: Router = Router()
 
-routes.get('/', userController.index)
+routes.get('/', authGuard, userController.index)
 
-routes.post('/', userController.store)
+routes.post('/', authGuard, userController.store)
 
 export default routes
