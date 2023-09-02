@@ -5,8 +5,8 @@ import { authGuard } from '@/middlewares/auth'
 
 const routes: Router = Router()
 
-routes.get('/', authGuard, userController.index)
+routes.get('/', authGuard(['admin']), userController.index)
 
-routes.post('/', authGuard, userController.store)
+routes.post('/', authGuard(['admin']), userController.store)
 
 export default routes

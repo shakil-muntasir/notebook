@@ -17,7 +17,7 @@ const index = async (_request: Request, response: Response) => {
 }
 
 const store = async (request: Request, response: Response) => {
-    const { name, email, password, confirmPassword }: User = request.body
+    const { name, email, password, confirmPassword, roles }: User = request.body
 
     const userExists = await User.findOne({ email })
     if (userExists) {
@@ -32,7 +32,7 @@ const store = async (request: Request, response: Response) => {
         return response.status(400).json({ error: 'Passwords do not match.' })
     }
 
-    await User.create({ name, email, password })
+    await User.create({ name, email, password, roles })
 
     const user = await User.findOne({ email })
 

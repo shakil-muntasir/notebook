@@ -17,9 +17,14 @@ const userSchema = new Schema(
         },
         password: {
             type: String,
-            select: false,
+            required: true,
             minlength: 6,
-            required: true
+            select: false
+        },
+        roles: {
+            type: [String],
+            required: true,
+            default: ['user']
         }
     },
     {
@@ -41,7 +46,8 @@ userSchema.methods.generateAccessToken = function (): string {
     const payload: UserPayload = {
         _id: this._id,
         name: this.name,
-        email: this.email
+        email: this.email,
+        roles: this.roles
     }
 
     const accessToken = jwt.sign(payload, env.JWT_ACCESS_SECRET, {
