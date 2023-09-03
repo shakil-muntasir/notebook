@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import env from '@/utils/env'
 import { UserPayload } from '@/types/user'
+import { sessionSchema } from '@/models/schema/session'
 
 const userSchema = new Schema(
     {
@@ -25,6 +26,10 @@ const userSchema = new Schema(
             type: [String],
             required: true,
             default: ['user']
+        },
+        sessions: {
+            type: [sessionSchema],
+            select: false
         }
     },
     {
@@ -33,7 +38,9 @@ const userSchema = new Schema(
 )
 
 userSchema.pre('save', async function (next) {
-    this.password = await bcrypt.hash(this.password, 10)
+    if (this.isNew) {
+        this.password = await bcrypt.hash(this.password, 10)
+    }
 
     next()
 })

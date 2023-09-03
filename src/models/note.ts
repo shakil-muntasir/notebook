@@ -14,7 +14,8 @@ const noteSchema = new Schema(
         user: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: User
+            ref: User,
+            select: false
         },
         unread: {
             type: Boolean,

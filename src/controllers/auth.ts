@@ -1,13 +1,16 @@
 import { Request, Response } from 'express'
+import { Document } from 'mongoose'
 
 import User from '@/models/user'
-import { getTime } from '@/utils/timer'
 import env from '@/utils/env'
+import { getTime } from '@/utils/timer'
+import { addOrUpdateUserSession } from '@/helpers/session'
 
 const signup = async (request: Request, response: Response) => {
     const { name, email, password, confirmPassword }: User = request.body
 
     const userExists = await User.findOne({ email })
+
     if (userExists) {
         return response.status(400).json({ error: 'User already exists.' })
     }
@@ -20,10 +23,9 @@ const signup = async (request: Request, response: Response) => {
         return response.status(400).json({ error: 'Passwords do not match.' })
     }
 
-    const user: User = await User.create({ name, email, password })
+    const user = (await User.create({ name, email, password })) as Document & User
 
-    const accessToken = user.generateAccessToken()
-    const refreshToken = user.generateRefreshToken()
+    const { refreshToken } = await addOrUpdateUserSession(request, user)
 
     response.cookie('refreshToken', refreshToken, {
         httpOnly: true,
@@ -32,7 +34,7 @@ const signup = async (request: Request, response: Response) => {
 
     return response.json({
         type: 'Bearer',
-        accessToken,
+        accessToken: user.generateAccessToken(),
         expiresIn: getTime(env.JWT_ACCESS_EXPIRATION)
     })
 }
@@ -40,14 +42,13 @@ const signup = async (request: Request, response: Response) => {
 const signin = async (request: Request, response: Response) => {
     const { email, password }: User = request.body
 
-    const user: User = await User.findOne({ email }).select('+password')
+    const user = (await User.findOne({ email }).select('+password +sessions')) as Document & User
 
     if (!user || !(await user.comparePassword(password))) {
         return response.status(400).json({ error: 'Invalid credentials.' })
     }
 
-    const accessToken = user.generateAccessToken()
-    const refreshToken = user.generateRefreshToken()
+    const { refreshToken } = await addOrUpdateUserSession(request, user)
 
     response.cookie('refreshToken', refreshToken, {
         httpOnly: true,
@@ -56,7 +57,7 @@ const signin = async (request: Request, response: Response) => {
 
     return response.json({
         type: 'Bearer',
-        accessToken,
+        accessToken: user.generateAccessToken(),
         expiresIn: getTime(env.JWT_ACCESS_EXPIRATION)
     })
 }

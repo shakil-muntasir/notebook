@@ -32,9 +32,9 @@ const store = async (request: Request, response: Response) => {
         return response.status(400).json({ error: 'Passwords do not match.' })
     }
 
-    await User.create({ name, email, password, roles })
+    const createdUser = await User.create({ name, email, password, roles })
 
-    const user = await User.findOne({ email })
+    const user = await User.findById(createdUser._id)
 
     return response.json(user)
 }
