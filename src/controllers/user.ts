@@ -1,19 +1,12 @@
 import { Request, Response } from 'express'
+import http from 'http-status'
 
 import User from '@/models/user'
 
 const index = async (_request: Request, response: Response) => {
-    try {
-        const users: User[] = await User.find()
+    const users: User[] = await User.find()
 
-        return response.json(users)
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return response.status(500).json({ error: error.message })
-        }
-
-        return response.status(500).json({ error })
-    }
+    return response.json(users)
 }
 
 const store = async (request: Request, response: Response) => {
@@ -21,15 +14,15 @@ const store = async (request: Request, response: Response) => {
 
     const userExists = await User.findOne({ email })
     if (userExists) {
-        return response.status(400).json({ error: 'User already exists.' })
+        return response.status(http.CONFLICT).json({ error: 'User already exists.' })
     }
 
     if (!confirmPassword) {
-        return response.status(400).json({ error: 'confirmPassword is required.' })
+        return response.status(http.BAD_REQUEST).json({ error: 'confirmPassword is required.' })
     }
 
     if (password !== confirmPassword) {
-        return response.status(400).json({ error: 'Passwords do not match.' })
+        return response.status(http.BAD_REQUEST).json({ error: 'Passwords do not match.' })
     }
 
     const createdUser = await User.create({ name, email, password, roles })

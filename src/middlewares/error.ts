@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
+import http from 'http-status'
+import { Error } from 'mongoose'
 
-export const errorHandler = (error: unknown, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (error: unknown, _request: Request, response: Response, _next: NextFunction) => {
     if (error instanceof Error) {
-        return res.status(500).json({ message: error.message })
+        return response.status(http.INTERNAL_SERVER_ERROR).json({ message: error.message })
     }
 
-    res.status(500).json({ message: 'Internal Server Error' })
+    response.status(http.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error.' })
 }

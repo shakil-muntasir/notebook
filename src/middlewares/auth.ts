@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import http from 'http-status'
 import jwt from 'jsonwebtoken'
 
 import env from '@/utils/env'
@@ -17,7 +18,7 @@ export const authGuard = (allowedRoles: string[] = ['user']) => {
         const authHeader = req.headers['authorization']
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return res.status(401).json({ message: 'Unauthorized' })
+            return res.status(http.UNAUTHORIZED).json({ message: 'Unauthorized' })
         }
 
         const token = authHeader.split(' ')[1] // Split Bearer and token and get the token
@@ -40,14 +41,14 @@ export const authGuard = (allowedRoles: string[] = ['user']) => {
 
                 if (!isAuthorized) {
                     // User doesn't have the required roles, deny access
-                    return res.status(403).json({ message: 'Forbidden' })
+                    return res.status(http.FORBIDDEN).json({ message: 'Forbidden' })
                 }
 
                 // User has the required roles, allow access
                 next()
             }
         } catch (error) {
-            return res.status(401).json({ message: 'Unauthorized' })
+            return res.status(http.UNAUTHORIZED).json({ message: 'Unauthorized' })
         }
     }
 }
