@@ -9,4 +9,10 @@ routes.get('/', authGuard(), noteController.index)
 
 routes.post('/', authGuard(), noteController.store)
 
+routes.get('/:id', authGuard(), noteController.show)
+
+routes.patch('/:id', authGuard(), noteController.update)
+
+routes.delete('/:id', authGuard(), noteController.destroy)
+
 export default routes
