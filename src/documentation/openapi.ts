@@ -1,3 +1,4 @@
+import AuthRoutes from './routes/auth'
 import NoteRoutes from './routes/note'
 import UserRoutes from './routes/user'
 
@@ -21,6 +22,7 @@ export default {
         }
     },
     paths: {
+        ...AuthRoutes,
         ...NoteRoutes,
         ...UserRoutes
     },
@@ -28,6 +30,18 @@ export default {
         schemas: {
             ...NoteSchema,
             ...UserSchema
-        }
+        },
+        securitySchemes: {
+            'Bearer Token': {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT'
+            }
+        },
+        security: [
+            {
+                'Bearer Token': []
+            }
+        ]
     }
 }

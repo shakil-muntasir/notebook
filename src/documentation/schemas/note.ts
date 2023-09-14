@@ -3,7 +3,7 @@ const NoteSchema = {
         properties: {
             _id: {
                 type: 'string',
-                format: 'uuid',
+                format: 'string',
                 example: '5f8a5d9b4f4d4a1b1c9a7b1c'
             },
             title: {

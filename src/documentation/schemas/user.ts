@@ -4,23 +4,23 @@ const UserSchema = {
         properties: {
             _id: {
                 type: 'string',
-                format: 'uuid',
+                format: 'string',
                 example: '5f8a5d9b4f4d4a1b1c9a7b1c'
             },
             name: {
                 type: 'string',
-                example: 'Muntasir Rahman'
+                example: 'John Doe'
             },
             email: {
                 type: 'string',
-                example: 'muntasir@email.com'
+                example: 'john@email.com'
             },
             roles: {
                 type: 'array',
                 items: {
                     type: 'string'
                 },
-                example: ['admin', 'user']
+                example: ['user']
             },
             createdAt: {
                 type: 'string',
