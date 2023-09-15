@@ -1,5 +1,5 @@
 import 'express-async-errors'
-import { Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import swaggerUi from 'swagger-ui-express'
 
 import env from '@/utils/env'
@@ -19,12 +19,24 @@ routes.use('/users', userRoutes)
 
 routes.use('/notes', noteRoutes)
 
-if (env.NODE_ENV !== 'production') {
-    const swaggerOptions = { swaggerOptions: { persistAuthorization: true } }
+if (['staging', 'production'].includes(env.NODE_ENV)) {
+    /**
+        For reverse proxy, e.g. nginx:
+        location /api/documentation/ {
+            proxy_pass http://<ip>:<port>/api/documentation/;
+        }
+     */
 
-    routes.use('/documentation', swaggerUi.serve)
-    routes.get('/documentation', swaggerUi.setup(swaggerDocument, swaggerOptions))
+    const forwardedPrefixSwagger = async (request: Request, _response: Response, next: NextFunction) => {
+        request.originalUrl = (request.headers['x-forwarded-prefix'] || '') + request.url
+        next()
+    }
+
+    routes.use('/documentation/', forwardedPrefixSwagger, swaggerUi.serve)
+} else {
+    routes.use('/documentation/', swaggerUi.serve)
 }
+routes.get('/documentation/', swaggerUi.setup(swaggerDocument, { swaggerOptions: { persistAuthorization: true } }))
 
 routes.use(errorHandler)
 
