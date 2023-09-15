@@ -13,16 +13,18 @@ import { errorHandler } from '@/middlewares/error'
 
 const routes: Router = Router()
 
-if (env.NODE_ENV !== 'production') {
-    routes.use('/documentation', swaggerUi.serve)
-    routes.get('/documentation', swaggerUi.setup(swaggerDocument))
-}
-
 routes.use('/auth', authRoutes)
 
 routes.use('/users', userRoutes)
 
 routes.use('/notes', noteRoutes)
+
+if (env.NODE_ENV !== 'production') {
+    const swaggerOptions = { swaggerOptions: { persistAuthorization: true } }
+
+    routes.use('/documentation', swaggerUi.serve)
+    routes.get('/documentation', swaggerUi.setup(swaggerDocument, swaggerOptions))
+}
 
 routes.use(errorHandler)
 
