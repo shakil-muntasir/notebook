@@ -1,0 +1,36 @@
+run-name: Deploy to Staging Server, by @${{ github.actor }}
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      APP_NAME: ${{ secrets.APP_NAME }}
+      IP_ADDRESS: ${{ secrets.IP_ADDRESS }}
+      PORT: ${{ secrets.PORT }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      USER_NAME: ${{ secrets.USER_NAME }}
+
+    steps:
+      - name: Deploying app to staging server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.IP_ADDRESS }}
+          username: ${{ env.USER_NAME }}
+          key: ${{ env.PRIVATE_KEY }}
+          port: ${{ env.PORT }}
+          script: |
+            export NVM_DIR=/home/${{ secrets.USER_NAME }}/.nvm
+            source /home/${{ secrets.USER_NAME }}/.nvm/nvm.sh
+
+            cd /home/${{ env.USER_NAME }}/apps/${{ env.APP_NAME }}
+            git fetch --prune
+            git reset --hard origin/${{ github.ref_name }}
+            npm install
+            npm run build
+            pm2 restart ${{ env.APP_NAME }}
