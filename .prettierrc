@@ -1,7 +1,16 @@
 {
+  "singleQuote": true,
+  "printWidth": 300,
+  "tabWidth": 4,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "jsxSingleQuote": true,
+  "semi": false,
+  "useEditorConfig": false,
+
   "overrides": [
     {
-      "files": ["*.yaml, *.yml", "*.json"],
+      "files": ["*.yaml, *.yml", "*.json", ".prettierrc"],
       "options": {
         "tabWidth": 2
       }

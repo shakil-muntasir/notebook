@@ -14,10 +14,6 @@ export const sessionSchema = new Schema(
             type: String,
             required: true
         },
-        userAgent: {
-            type: String,
-            required: true
-        },
         osName: {
             type: String,
             required: true

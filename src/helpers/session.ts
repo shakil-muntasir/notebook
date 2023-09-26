@@ -5,18 +5,9 @@ import User from '@/models/user'
 import { SessionType } from '@/models/schema/session'
 
 export const addOrUpdateUserSession = async (request: Request, user: Document & User): Promise<SessionType> => {
-    // Get user's IP address
-    const response = await fetch('https://api.ipify.org?format=json')
-    const { ip: ipAddress }: { ip: string } = await response.json()
-
-    if (!ipAddress) {
-        throw new Error("Unable to get user's IP address.")
-    }
-
     const sessionData: SessionType = {
         browserName: request.useragent?.browser || 'Unknown',
-        ipAddress,
-        userAgent: request.headers['user-agent'] || 'Unknown',
+        ipAddress: request.headers['cf-connecting-ip']?.toString() || request.headers['x-forwarded-for']?.toString() || request.socket.remoteAddress || 'Unknown',
         osName: request.useragent?.os || 'Unknown',
         lastAccess: new Date(),
         refreshToken: user.generateRefreshToken()
