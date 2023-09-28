@@ -63,9 +63,46 @@ const signin = async (request: Request, response: Response) => {
     })
 }
 
+const sessions = async (request: Request, response: Response) => {
+    const { _id } = request.user!
+
+    const user = await User.findById(_id).select({
+        sessions: { refreshToken: false, createdAt: false, updatedAt: false }
+    })
+
+    if (!user) {
+        return response.status(http.NOT_FOUND).json({ error: 'User not found.' })
+    }
+
+    return response.status(http.OK).json(user.sessions)
+}
+
+const deleteSession = async (request: Request, response: Response) => {
+    const { _id: userId } = request.user!
+    const { id: sessionId } = request.params
+
+    const user = await User.findById(userId).select('+sessions')
+
+    if (!user) {
+        return response.status(http.NOT_FOUND).json({ error: 'User not found.' })
+    }
+
+    if (!user.sessions.id(sessionId)) {
+        return response.status(http.NOT_FOUND).json({ error: 'Session not found.' })
+    }
+
+    user.sessions.remove({ _id: sessionId })
+
+    await user.save()
+
+    return response.status(http.NO_CONTENT).send()
+}
+
 const authController = {
     signup,
-    signin
+    signin,
+    sessions,
+    deleteSession
 }
 
 export default authController
