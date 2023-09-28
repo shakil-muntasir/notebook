@@ -15,7 +15,7 @@ export const addOrUpdateUserSession = async (request: Request, user: Document & 
 
     // Check if there is an existing session with matching browserName and ipAddress
     const existingSessionIndex: number = user.sessions.findIndex(session => {
-        return session.browserName === sessionData.browserName && session.ipAddress === sessionData.ipAddress
+        return session.browserName === sessionData.browserName && session.ipAddress === sessionData.ipAddress && session.osName === sessionData.osName
     })
 
     if (existingSessionIndex !== -1) {
