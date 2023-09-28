@@ -4,6 +4,7 @@ import UserRoutes from './routes/user'
 
 import NoteSchema from './schemas/note'
 import UserSchema from './schemas/user'
+import SessionSchema from './schemas/session'
 
 export default {
     openapi: '3.0.0',
@@ -29,7 +30,8 @@ export default {
     components: {
         schemas: {
             ...NoteSchema,
-            ...UserSchema
+            ...UserSchema,
+            ...SessionSchema
         },
         securitySchemes: {
             'Bearer Token': {

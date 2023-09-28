@@ -105,6 +105,93 @@ const AuthRoutes = {
                 }
             }
         }
+    },
+    '/api/auth/sessions': {
+        get: {
+            summary: 'Retrieve list of sessions',
+            description: "Retrieve list of logged in user's sessions.",
+            security: [{ 'Bearer Token': [] }],
+            tags: ['Auth'],
+            responses: {
+                '200': {
+                    description: 'Successful response',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'array',
+                                items: {
+                                    $ref: '#/components/schemas/Session'
+                                }
+                            }
+                        }
+                    }
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    '/api/auth/sessions/{id}': {
+        delete: {
+            summary: 'Delete a session by ID',
+            description: 'Delete a user session from the database by ID.',
+            security: [{ 'Bearer Token': [] }],
+            tags: ['Auth'],
+            parameters: [
+                {
+                    name: 'id',
+                    in: 'path',
+                    required: true,
+                    schema: {
+                        type: 'string',
+                        format: 'string'
+                    },
+                    description: 'ID of the session to delete'
+                }
+            ],
+            responses: {
+                '204': {
+                    description: 'Session deleted successfully'
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
+                },
+                '404': {
+                    description: 'Not found',
+                    content: {
+                        'application/json': {
+                            examples: {
+                                Session: {
+                                    value: {
+                                        error: 'Session not found.'
+                                    }
+                                },
+                                User: {
+                                    value: {
+                                        error: 'User not found.'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

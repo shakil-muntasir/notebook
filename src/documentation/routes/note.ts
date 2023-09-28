@@ -18,6 +18,16 @@ const NoteRoutes = {
                             }
                         }
                     }
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -66,6 +76,16 @@ const NoteRoutes = {
                             }
                         }
                     }
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -99,8 +119,25 @@ const NoteRoutes = {
                         }
                     }
                 },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
+                },
                 '404': {
-                    description: 'Note not found'
+                    description: 'Not found',
+                    content: {
+                        'application/json': {
+                            example: {
+                                error: 'Note not found.'
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -135,10 +172,34 @@ const NoteRoutes = {
             },
             responses: {
                 '200': {
-                    description: 'Note updated successfully'
+                    description: 'Note updated successfully',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/Note'
+                            }
+                        }
+                    }
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
                 },
                 '404': {
-                    description: 'Note not found'
+                    description: 'Not found',
+                    content: {
+                        'application/json': {
+                            example: {
+                                error: 'Note not found.'
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -163,8 +224,25 @@ const NoteRoutes = {
                 '204': {
                     description: 'Note deleted successfully'
                 },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
+                },
                 '404': {
-                    description: 'Note not found'
+                    description: 'Not found',
+                    content: {
+                        'application/json': {
+                            example: {
+                                error: 'Note not found.'
+                            }
+                        }
+                    }
                 }
             }
         }

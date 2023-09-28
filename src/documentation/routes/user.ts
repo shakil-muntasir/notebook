@@ -18,6 +18,16 @@ const UserRoutes = {
                             }
                         }
                     }
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -55,6 +65,16 @@ const UserRoutes = {
                     content: {
                         'application/json': {
                             examples: {
+                                Name: {
+                                    value: {
+                                        error: 'name is required.'
+                                    }
+                                },
+                                Email: {
+                                    value: {
+                                        error: 'email is required.'
+                                    }
+                                },
                                 'Confirm Password': {
                                     value: {
                                         error: 'confirmPassword is required.'
@@ -65,6 +85,16 @@ const UserRoutes = {
                                         error: 'Passwords do not match.'
                                     }
                                 }
+                            }
+                        }
+                    }
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
                             }
                         }
                     }
