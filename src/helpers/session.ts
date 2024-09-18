@@ -5,9 +5,10 @@ import User from '@/models/user'
 import { SessionType } from '@/models/schema/session'
 
 export const addOrUpdateUserSession = async (request: Request, user: Document & User): Promise<SessionType> => {
+    const ipAddress: string = request.headers['cf-connecting-ip']?.toString() || request.headers['x-forwarded-for']?.toString() || request.socket.remoteAddress || 'Unknown'
     const sessionData: SessionType = {
         browserName: request.useragent?.browser || 'Unknown',
-        ipAddress: request.headers['cf-connecting-ip']?.toString() || request.headers['x-forwarded-for']?.toString() || request.socket.remoteAddress || 'Unknown',
+        ipAddress: ipAddress.split(',')[0],
         osName: request.useragent?.os || 'Unknown',
         lastAccess: new Date(),
         refreshToken: user.generateRefreshToken()
