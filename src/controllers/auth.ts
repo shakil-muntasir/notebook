@@ -63,6 +63,20 @@ const signin = async (request: Request, response: Response) => {
     })
 }
 
+const user = async (request: Request, response: Response) => {
+    if(!request.user) {
+        return response.status(http.UNAUTHORIZED).json({error: 'Unauthorized'});
+    }
+
+    const user = await User.findById(request.user._id).select({password: false, sessions: false});
+
+    if(!user) {
+        return response.status(http.NOT_FOUND).json({error: 'User not found.'});
+    }
+
+    return response.status(http.OK).json(user);
+}
+
 const sessions = async (request: Request, response: Response) => {
     const { _id } = request.user!
 
@@ -101,6 +115,7 @@ const deleteSession = async (request: Request, response: Response) => {
 const authController = {
     signup,
     signin,
+    user,
     sessions,
     deleteSession
 }

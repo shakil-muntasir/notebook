@@ -106,6 +106,36 @@ const AuthRoutes = {
             }
         }
     },
+    '/api/auth/user': {
+        get: {
+            summary: 'Retrieve logged in user details',
+            description: 'Retrieve details of the logged in user.',
+            security: [{ 'Bearer Token': [] }],
+            tags: ['Auth'],
+            responses: {
+                '200': {
+                    description: 'Successful response',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/User'
+                            }
+                        }
+                    }
+                },
+                '401': {
+                    description: 'Unauthorized',
+                    content: {
+                        'application/json': {
+                            example: {
+                                message: 'Unauthorized'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     '/api/auth/sessions': {
         get: {
             summary: 'Retrieve list of sessions',

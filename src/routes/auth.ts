@@ -10,6 +10,8 @@ routes.post('/signup', authController.signup)
 
 routes.post('/signin', authController.signin)
 
+routes.get('/user', authGuard(), authController.user)
+
 routes.get('/sessions', authGuard(), authController.sessions)
 
 routes.delete('/sessions/:id', authGuard(), authController.deleteSession)
