@@ -23,7 +23,7 @@ jobs:
           host: ${{ env.IP_ADDRESS }}
           username: ${{ env.USER_NAME }}
           key: ${{ env.PRIVATE_KEY }}
-          port: ${{ env.PORT }}
+          port: ${{ env.APP_PORT }}
           script: |
             export NVM_DIR=/home/${{ secrets.USER_NAME }}/.nvm
             source /home/${{ secrets.USER_NAME }}/.nvm/nvm.sh
