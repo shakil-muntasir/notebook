@@ -106,6 +106,72 @@ const AuthRoutes = {
             }
         }
     },
+    '/api/auth/refresh': {
+        post: {
+            summary: 'Refresh access token',
+            description: 'Refresh access token using refresh token.',
+            tags: ['Auth'],
+            requestBody: {
+                description: 'Refresh token request object',
+                content: {
+                    'application/json': {
+                        example: {
+                            refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY'
+                        }
+                    }
+                }
+            },
+            responses: {
+                '200': {
+                    description: 'Access token refreshed successfully',
+                    content: {
+                        'application/json': {
+                            example: {
+                                type: 'Bearer',
+                                accessToken:
+                                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY',
+                                expiresIn: 3600000
+                            }
+                        }
+                    }
+                },
+                '401': {
+                    description: 'Invalid credentials',
+                    content: {
+                        'application/json': {
+                            examples: {
+                                Unauthorized: {
+                                    value: {
+                                        error: 'Unauthorized'
+                                    }
+                                },
+                                Invalid: {
+                                    value: {
+                                        error: 'Invalid refresh token.'
+                                    }
+                                },
+                                NotInUserSession: {
+                                    value: {
+                                        error: 'Refresh token not found in user sessions.'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                '404': {
+                    description: 'Not found',
+                    content: {
+                        'application/json': {
+                            example: {
+                                error: 'User not found.'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     '/api/auth/user': {
         get: {
             summary: 'Retrieve logged in user details',

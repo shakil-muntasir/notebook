@@ -10,6 +10,8 @@ routes.post('/signup', authController.signup)
 
 routes.post('/signin', authController.signin)
 
+routes.post('/refresh', authController.refresh)
+
 routes.get('/user', authGuard(), authController.user)
 
 routes.get('/sessions', authGuard(), authController.sessions)
