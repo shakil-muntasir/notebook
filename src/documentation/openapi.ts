@@ -15,7 +15,7 @@ export default {
         contact: {
             name: 'Muntasir Rahman',
             email: 'shakil_muntasir@hotmail.com',
-            url: 'https://muntasir.io'
+            url: 'https://muntasir.co'
         },
         license: {
             name: 'MIT License',

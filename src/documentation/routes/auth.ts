@@ -23,10 +23,10 @@ const AuthRoutes = {
                     content: {
                         'application/json': {
                             example: {
-                                type: 'Bearer',
                                 accessToken:
                                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY',
-                                expiresIn: 3600000
+                                refreshToken:
+                                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY'
                             }
                         }
                     }
@@ -85,10 +85,10 @@ const AuthRoutes = {
                     content: {
                         'application/json': {
                             example: {
-                                type: 'Bearer',
                                 accessToken:
                                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY',
-                                expiresIn: 3600000
+                                refreshToken:
+                                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY'
                             }
                         }
                     }
@@ -127,10 +127,10 @@ const AuthRoutes = {
                     content: {
                         'application/json': {
                             example: {
-                                type: 'Bearer',
                                 accessToken:
                                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY',
-                                expiresIn: 3600000
+                                refreshToken:
+                                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTAyMzA0OWIyYWVlOGM3ZjRkMGMzODUiLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5AZW1haWwuY29tIiwicm9sZXMiOlsiYOPtaW4iXSwiaWF0IjoxNjk0NzIxMDcwLCJleHAiOjE2OTQ3MjQ2NzB9.MSrrfqJ0rGD76QL3FMfBXwSs2KvSZAF08GC1m1TdZmY'
                             }
                         }
                     }

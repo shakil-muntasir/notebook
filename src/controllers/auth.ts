@@ -3,8 +3,6 @@ import { Document } from 'mongoose'
 import http from 'http-status'
 
 import User from '@/models/user'
-import env from '@/utils/env'
-import { getTime } from '@/utils/timer'
 import { addOrUpdateUserSession } from '@/helpers/session'
 import { setRefreshTokenCookie, verifyRefreshToken } from '@/utils/auth-verify'
 
@@ -32,9 +30,8 @@ const signup = async (request: Request, response: Response) => {
     setRefreshTokenCookie(response, refreshToken)
 
     return response.status(http.OK).json({
-        type: 'Bearer',
         accessToken: user.generateAccessToken(),
-        expiresIn: getTime(env.JWT_ACCESS_EXPIRATION)
+        refreshToken
     })
 }
 
@@ -52,9 +49,8 @@ const signin = async (request: Request, response: Response) => {
     setRefreshTokenCookie(response, refreshToken)
 
     return response.status(http.OK).json({
-        type: 'Bearer',
         accessToken: user.generateAccessToken(),
-        expiresIn: getTime(env.JWT_ACCESS_EXPIRATION)
+        refreshToken
     })
 }
 
@@ -65,54 +61,50 @@ const refresh = async (request: Request, response: Response) => {
         return response.status(http.UNAUTHORIZED).json({ error: 'Unauthorized' })
     }
 
-    const payload = verifyRefreshToken(refreshToken);
+    const payload = verifyRefreshToken(refreshToken)
     if (!payload) {
-        return response.status(http.UNAUTHORIZED).json({error: 'Invalid refresh token.'});
+        return response.status(http.UNAUTHORIZED).json({ error: 'Invalid refresh token.' })
     }
 
     const user = (await User.findById(payload._id).select('+sessions')) as Document & User
     if (!user) {
-        return response.status(http.NOT_FOUND).json({error: 'User not found.'});
+        return response.status(http.NOT_FOUND).json({ error: 'User not found.' })
     }
 
-    // Step 3: Check if the refresh token exists in the user's sessions
-    const existingSessionIndex = user.sessions.findIndex(
-        (session) => session.refreshToken === refreshToken
-    );
+    const existingSessionIndex = user.sessions.findIndex(session => session.refreshToken === refreshToken)
 
     if (existingSessionIndex === -1) {
-        return response.status(http.UNAUTHORIZED).json({error: 'Refresh token not found in user sessions.'});
+        return response.status(http.UNAUTHORIZED).json({ error: 'Refresh token not found in user sessions.' })
     }
 
-    const newAccessToken = user.generateAccessToken();
-    const newRefreshToken = user.generateRefreshToken();
+    const newAccessToken = user.generateAccessToken()
+    const newRefreshToken = user.generateRefreshToken()
 
-    user.sessions[existingSessionIndex].lastAccess = new Date(); // Update lastAccess time
-    user.sessions[existingSessionIndex].refreshToken = newRefreshToken; // Replace old refresh token with new one
+    user.sessions[existingSessionIndex].lastAccess = new Date() // Update lastAccess time
+    user.sessions[existingSessionIndex].refreshToken = newRefreshToken // Replace old refresh token with new one
 
-    await user.save(); // Save the updated user
+    await user.save() // Save the updated user
 
-    setRefreshTokenCookie(response, newRefreshToken);
+    setRefreshTokenCookie(response, newRefreshToken)
 
     return response.status(http.OK).json({
-        type: 'Bearer',
         accessToken: newAccessToken,
-        expiresIn: env.JWT_ACCESS_EXPIRATION,
-    });
+        refreshToken: newRefreshToken
+    })
 }
 
 const user = async (request: Request, response: Response) => {
-    if(!request.user) {
-        return response.status(http.UNAUTHORIZED).json({error: 'Unauthorized'});
+    if (!request.user) {
+        return response.status(http.UNAUTHORIZED).json({ error: 'Unauthorized' })
     }
 
-    const user = await User.findById(request.user._id).select({password: false, sessions: false});
+    const user = await User.findById(request.user._id).select({ password: false, sessions: false })
 
-    if(!user) {
-        return response.status(http.NOT_FOUND).json({error: 'User not found.'});
+    if (!user) {
+        return response.status(http.NOT_FOUND).json({ error: 'User not found.' })
     }
 
-    return response.status(http.OK).json(user);
+    return response.status(http.OK).json(user)
 }
 
 const sessions = async (request: Request, response: Response) => {
